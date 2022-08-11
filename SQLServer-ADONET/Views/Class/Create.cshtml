@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create New Class</h1>
+
+<form method="post" asp-action="Create">
+  <div class="form-group mb-3">
+    <label for="classname">Class name</label>
+    <input type="text" class="form-control" id="classname" name="classname">
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+  <a asp-controller="Class" asp-action="Index" class="btn btn-secondary">Back to List</a>
+</form>

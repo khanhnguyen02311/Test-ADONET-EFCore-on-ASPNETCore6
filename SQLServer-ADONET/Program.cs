@@ -1,13 +1,11 @@
-using Microsoft.EntityFrameworkCore;
-using SQLServer_EF6.Models;
+using SQLServer_ADONET.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<GeneralDBContext>(
-    options => options.UseSqlServer(builder.Configuration.GetConnectionString("WebApp5Context")));
-
+builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+builder.Services.AddSingleton<IApplicationService, ApplicationService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

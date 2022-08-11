@@ -1,0 +1,36 @@
+﻿@model List<ClassModel>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Class List</h1>
+
+<a class="btn btn-primary" asp-controller="Class" asp-action="Create">Add new class</a>
+@*<a onclick="showInPopup('@Url.Action("Create", "Class")','New Transaction')" class="btn btn-primary">Add new class</a>*@
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Class ID</th>
+      <th scope="col">Classname</th>
+      <th scope="col">Number of students</th>
+      <th scope="col">Options</th>
+    </tr>
+  </thead>
+  <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+              <td>@c.ID</td>
+              <td>@c.Classname</td>
+              <td>@c.NumStudent</td>
+              <td>
+                  <a class="btn btn-outline-secondary" asp-controller="Class" asp-action="Edit" asp-route-id="@c.ID">Edit</a>                
+                  <form style="display: inline-table" asp-page-handler="Delete" onclick="return confirm('Are you sure you want to delete this?')">
+                      <a class="btn btn-outline-secondary" asp-controller="Class" asp-action="Delete" asp-route-id="@c.ID">Delete</a>
+                  </form>
+              </td>
+            </tr>
+        }
+  </tbody>
+</table>
