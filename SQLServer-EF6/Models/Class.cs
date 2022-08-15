@@ -9,6 +9,6 @@ namespace SQLServer_EF6.Models
         public string? Classname { get; set; }
         public int? NumStudent { get; set; }
 
-        public virtual ICollection<Student> Students { get; set; } = new List<Student>();
+        public virtual ICollection<Student> Students { get; set; }
     }
 }

@@ -10,7 +10,6 @@ namespace SQLServer_EF6.Models
         public string Lastname { get; set; } = null!;
         public DateTime? Birthdate { get; set; }
         public int? ClassId { get; set; }
-        
         public virtual Class? Class { get; set; }
     }
 }
