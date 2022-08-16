@@ -16,17 +16,21 @@
   </div>
   <div class="form-group">
     <label for="classform">Select class</label>
-    <select asp-for="ClassID" class="form-control mb-3" id="classform">
+    <select asp-for="ClassId" class="form-control" id="classform">
         @{
             if (ViewData["Classes"] != null) {
                 foreach (var c in (List<ClassModel>)ViewData["Classes"])
                 {
-                    <option value="@c.ID">@c.Classname</option>
+                    <option value="@c.Id">@c.Classname</option>
                 }
             }
             <option selected value="-1">-No class-</option>
         }
     </select>
+  </div>
+  <div class="form-group">
+    <label asp-for="Birthdate" class="control-label"></label>
+    <input asp-for="Birthdate" class="form-control mb-3" />
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
   <a asp-controller="Student" asp-action="Index" class="btn btn-secondary">Back to List</a>

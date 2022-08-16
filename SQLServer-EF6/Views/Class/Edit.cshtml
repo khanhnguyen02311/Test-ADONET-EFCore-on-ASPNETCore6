@@ -1,0 +1,74 @@
+﻿@model ClassModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit Class</h1>
+
+<a asp-controller="Class" asp-action="Index" class="btn btn-secondary">Back to List</a>
+
+<form method="post" asp-action="Edit">
+    <label for="inputgroup">Class name</label>
+    <div class="input-group mt-1 mb-3" id="inputgroup">
+    <input type="text" class="form-control" id="classname" name="newName" value="@Model.Classname">
+    <button type="submit" class="btn btn-outline-secondary px-4">Save</button>
+    </div>
+</form>
+
+<label for="studenttable">Student list</label>
+<table class="table table-striped" id="studenttable">
+  <thead>
+    <tr>
+      <th scope="col">Student ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Birthdate</th>
+      <th scope="col">Options</th>
+    </tr>
+  </thead>
+  <tbody>
+        @{
+            if (Model.Students != null)
+            foreach (var student in Model.Students as IEnumerable<StudentModel>)
+            {
+                <tr>
+                    <td>@student.Id</td>
+                    <td>@student.Firstname @student.Lastname</td>
+                    <td>@student.Birthdate</td>
+                    <td>
+                        <a asp-controller="Class" asp-action="RemoveOrAddClass" 
+                        asp-route-id="@student.Id" asp-route-classid="@Model.Id" class="btn btn-danger">Remove from class</a>
+                    </td>
+                </tr>
+            }
+        }
+  </tbody>
+</table>
+
+<label for="unknownstudenttable">Non-organized student list</label>
+<table class="table table-striped" id="unknownstudenttable">
+  <thead>
+    <tr>
+      <th scope="col">Student ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Birthdate</th>
+      <th scope="col">Options</th>
+    </tr>
+  </thead>
+  <tbody>
+        @{
+            if (Model.UnknownStudent != null)
+            foreach (var student in Model.UnknownStudent as IEnumerable<StudentModel>)
+            {
+                <tr>
+                    <td>@student.ID</td>
+                    <td>@student.Firstname @student.Lastname</td>
+                    <td>@student.Birthdate</td>
+                    <td>
+                        <a asp-controller="Class" asp-action="RemoveOrAddClass"
+                        asp-route-id="@student.ID" asp-route-classid="@Model.Class.ID" asp-route-isUnknown=true class="btn btn-success">Add to class</a>
+                    </td>
+                </tr>
+            }
+        }
+  </tbody>
+</table>

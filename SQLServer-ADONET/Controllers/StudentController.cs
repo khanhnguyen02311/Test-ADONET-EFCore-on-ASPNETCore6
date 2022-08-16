@@ -10,9 +10,7 @@ namespace SQLServer_ADONET.Controllers
         private List<ClassModel> listClass = new List<ClassModel>();
         private List<StudentModel> listStudent = new List<StudentModel>();
 
-
         public StudentController(IApplicationService s) { this.applicationService = s; }
-
 
         [HttpGet]
         public IActionResult Index(string sortOrder, string searchString)
@@ -22,7 +20,7 @@ namespace SQLServer_ADONET.Controllers
             ViewData["CurrentFilter"] = searchString;
             if (!String.IsNullOrEmpty(searchString))
             {
-                listStudent = listStudent.Where(s => s.Lastname.Contains(searchString) || s.Firstname.Contains(searchString)).ToList();
+                listStudent = listStudent.Where(s => s.Lastname.ToLower().Contains(searchString.ToLower()) || s.Firstname.ToLower().Contains(searchString.ToLower())).ToList();
             }
 
             //sorting

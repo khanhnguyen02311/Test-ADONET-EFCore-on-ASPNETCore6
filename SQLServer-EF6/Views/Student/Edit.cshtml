@@ -1,0 +1,43 @@
+﻿@model StudentModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit Student</h1>
+
+<form method="post" asp-action="Edit">
+  <div class="form-group">
+    <label for="firstname">First name</label>
+    <input asp-for="Firstname" type="text" class="form-control" id="firstname">
+  </div>
+  <div class="form-group">
+    <label for="lastname">Last name</label>
+    <input asp-for="Lastname" type="text" class="form-control" id="lastname">
+  </div>
+  <div class="form-group">
+    <label for="classform">Select class</label>
+    <select asp-for="ClassId" class="form-control" id="classform">
+        @{
+            if (ViewData["Classes"] != null) {
+                foreach (var c in (List<ClassModel>)ViewData["Classes"])
+                {
+                    if (Model.ClassId == @c.Id) {
+                        <option value="@c.Id" selected>@c.Classname</option>
+                    } else {
+                        <option value="@c.Id">@c.Classname</option>
+                    }
+                }
+            }
+            if (Model.ClassId == null) {<option selected value="-1">-No class-</option>}
+            else {<option value="-1">-No class-</option>}
+            
+        }
+    </select>
+  </div>
+  <div class="form-group">
+    <label asp-for="Birthdate" class="control-label"></label>
+    <input asp-for="Birthdate" class="form-control mb-3" />
+  </div>
+  <button type="submit" class="btn btn-primary">Update</button>
+  <a asp-controller="Student" asp-action="Index" class="btn btn-secondary">Back to List</a>
+</form>
