@@ -46,24 +46,36 @@ namespace SQLServer_EF6.Services
         public List<StudentModel> getAllStudent()
         {
             // Include: load the data with the foreign key's values
-            return Students.Include(s => s.Class).OrderBy(s => s.Id).ToList();
+            return Students.Include(e => e.Class).OrderBy(e => e.Id).ToList();
         }
 
         public List<ClassModel> getAllClass()
         {
-            return Classes.OrderBy(c => c.Id).ToList();
+            return Classes.OrderBy(e => e.Id).ToList();
         }
 
         public ClassModel getClassById(int id)
         {
-            var c = Classes.Find(id);
+            var c = Classes.Include(e => e.Students).SingleOrDefault(e => e.Id == id);
             return c ?? new ClassModel();
         }
 
         public StudentModel getStudentById(int id)
         {
-            var s = Students.Find(id);
+            var s = Students.Include(e => e.Class).SingleOrDefault(e => e.Id == id);
             return s ?? new StudentModel();
+        }
+
+        public List<StudentModel> getStudentsByClass(int? classid)
+        {
+            return Students.Where(e => e.ClassId == classid).ToList();
+        }
+
+        public void updateStudentClass(int id, int? classid)
+        {
+            var students = Students.Where(e => e.Id == id);
+            foreach (var student in students) student.ClassId = classid;
+            this.SaveChanges();
         }
     }
 }

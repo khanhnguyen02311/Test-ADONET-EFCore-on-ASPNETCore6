@@ -1,0 +1,22 @@
+﻿@model SQLServer_EF6.Models.ClassModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create New Class</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-action="Create">
+            <div class="form-group mb-3">
+                <label asp-for="Classname" class="control-label"></label>
+                <input asp-for="Classname" class="form-control" />
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a asp-controller="Class" asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>

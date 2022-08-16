@@ -56,16 +56,16 @@
   </thead>
   <tbody>
         @{
-            if (Model.UnknownStudent != null)
-            foreach (var student in Model.UnknownStudent as IEnumerable<StudentModel>)
+            if (ViewData["NoClassStudent"] != null)
+            foreach (var student in ViewData["NoClassStudent"] as IEnumerable<StudentModel>)
             {
                 <tr>
-                    <td>@student.ID</td>
+                    <td>@student.Id</td>
                     <td>@student.Firstname @student.Lastname</td>
                     <td>@student.Birthdate</td>
                     <td>
                         <a asp-controller="Class" asp-action="RemoveOrAddClass"
-                        asp-route-id="@student.ID" asp-route-classid="@Model.Class.ID" asp-route-isUnknown=true class="btn btn-success">Add to class</a>
+                        asp-route-id="@student.Id" asp-route-classid="@Model.Id" asp-route-isUnknown=true class="btn btn-success">Add to class</a>
                     </td>
                 </tr>
             }

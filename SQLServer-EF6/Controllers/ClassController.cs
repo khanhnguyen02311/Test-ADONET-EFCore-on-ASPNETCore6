@@ -11,19 +11,75 @@ namespace SQLServer_EF6.Controllers
         {
             _db = context;
         }
+
+        [HttpGet]
         public IActionResult Index()
         {
             List<ClassModel> listClass = _db.getAllClass();
             return View(listClass);
         }
 
-        
+        public IActionResult Create()
+        {
+            return View();
+        }
 
-        public IActionResult Edit(int id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(ClassModel c)
+        {
+            if (c.Classname != null && c.Classname != "" && _db.Classes.SingleOrDefault(e => e.Classname == c.Classname) == null)
+            {
+                _db.Classes.Add(c);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(c);
+        }
+
+        public IActionResult Delete(int id)
+        {
+            using (var transaction = _db.Database.BeginTransaction())
+            {
+                try
+                {
+                    var students = _db.Students.Where(e => e.ClassId == id);
+                    foreach (var student in students) student.ClassId = null;
+                    _db.SaveChanges();
+
+                    var c = _db.Classes.Find(id);
+                    _db.Classes.Remove(c);
+                    _db.SaveChanges();
+
+                    return RedirectToAction("Index");
+                    transaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    throw new Exception(e.Message);
+                }
+            }
+        }
+
+        public IActionResult Edit(int id, string newName)
         {
             ClassModel c = _db.getClassById(id);
             if (c == null) return NotFound();
+            if (newName != null && newName != "" && _db.Classes.FirstOrDefault(e => e.Classname == newName) == null)
+            {
+                c.Classname = newName;
+                _db.SaveChanges();
+            }
+            ViewData["NoClassStudent"] = _db.getStudentsByClass(null);
             return View(c);
+        }
+
+        public IActionResult RemoveOrAddClass(int id, int classid, bool isUnknown = false)
+        {
+            if (isUnknown) _db.updateStudentClass(id, classid);
+            else _db.updateStudentClass(id, null);
+            return RedirectToAction("Edit", new {id = classid});
         }
     }
 }

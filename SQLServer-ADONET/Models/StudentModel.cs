@@ -10,7 +10,9 @@ namespace SQLServer_ADONET.Models
         [Required]
         public string Firstname { get; set; }
         public string? Lastname { get; set; }
-        public string? Classname { get; set; }
         public DateTime? Birthdate { get; set; }
+
+        // for convenience
+        public string? Classname { get; set; }
     }
 }
