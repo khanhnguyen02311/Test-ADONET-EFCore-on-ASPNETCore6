@@ -13,9 +13,26 @@ namespace SQLServer_ADONET.Controllers
         public ClassController(IApplicationService applicationService) { this.applicationService = applicationService; }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string sortOrder, string searchClass)
         {
             listClass = applicationService.getAllClass();
+            ViewData["searchFilter"] = searchClass;
+            if (!String.IsNullOrEmpty(searchClass))
+                listClass = listClass
+                    .Where(e => e.Classname.ToLower().Contains(searchClass.ToLower()))
+                    .ToList();
+            ViewData["IDSort"] = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
+            ViewData["NameSort"] = sortOrder == "name_desc" ? "name_asc" : "name_desc";
+            ViewData["AmountSort"] = sortOrder == "amount_desc" ? "amount_asc" : "amount_desc";
+            switch (sortOrder)
+            {
+                case "id_desc": listClass = listClass.OrderByDescending(e => e.ID).ToList(); break;
+                case "name_desc": listClass = listClass.OrderByDescending(e => e.Classname).ToList(); break;
+                case "name_asc": listClass = listClass.OrderBy(e => e.Classname).ToList(); break;
+                case "amount_desc": listClass = listClass.OrderByDescending(e => e.NumStudent).ToList(); break;
+                case "amount_asc": listClass = listClass.OrderBy(e => e.NumStudent).ToList(); break;
+                default: listClass = listClass.OrderBy(e => e.ID).ToList(); break;
+            }
             return View(listClass);
         }
 

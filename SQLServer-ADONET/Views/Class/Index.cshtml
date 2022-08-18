@@ -8,15 +8,24 @@
 <a class="btn btn-primary" asp-controller="Class" asp-action="Create">Add new class</a>
 @*<a onclick="showInPopup('@Url.Action("Create", "Class")','New Transaction')" class="btn btn-primary">Add new class</a>*@
 
+<form asp-action="Index" method="get" class="mt-3">
+    <div class="form-actions no-color">
+        <p>
+            Find by name (non case-sensitive): <input type="text" name="searchStudent" value="@ViewData["searchFilter"]" />
+            <input type="submit" class="btn btn-primary" /> | <a asp-action="Index">Reset</a>
+        </p>
+    </div>
+</form>
+
 <table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">Class ID</th>
-      <th scope="col">Classname</th>
-      <th scope="col">Number of students</th>
-      <th scope="col">Options</th>
-    </tr>
-  </thead>
+    <thead>
+        <tr>
+            <th scope="col"><a asp-action="Index" asp-route-sortOrder="@ViewData["IDSort"]">Class ID</a></th>
+            <th scope="col"><a asp-action="Index" asp-route-sortOrder="@ViewData["NameSort"]">Classname</a></th>
+            <th scope="col"><a asp-action="Index" asp-route-sortOrder="@ViewData["AmountSort"]">Number of students</a></th>
+            <th scope="col">Options</th>
+        </tr>
+    </thead>
   <tbody>
         @foreach (var c in Model)
         {
