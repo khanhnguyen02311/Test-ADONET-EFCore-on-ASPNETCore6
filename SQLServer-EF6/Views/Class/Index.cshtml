@@ -8,16 +8,25 @@
 <a class="btn btn-primary" asp-controller="Class" asp-action="Create">Add new class</a>
 @*<a onclick="showInPopup('@Url.Action("Create", "Class")','New Transaction')" class="btn btn-primary">Add new class</a>*@
 
+<form asp-action="Index" method="get" class="mt-3">
+    <div class="form-actions no-color">
+        <p>
+            Find by name (non case-sensitive): <input type="text" name="searchClass" value="@ViewData["searchFilter"]" />
+            <input type="submit" class="btn btn-primary" /> | <a asp-action="Index">Reset</a>
+        </p>
+    </div>
+</form>
+
 <table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">Class ID</th>
-      <th scope="col">Classname</th>
-      <th scope="col">Number of students</th>
-      <th scope="col">Options</th>
-    </tr>
-  </thead>
-  <tbody>
+    <thead>
+        <tr>
+            <th scope="col"><a asp-action="Index" asp-route-sortOrder="@ViewData["IDSort"]">Class ID</a></th>
+            <th scope="col"><a asp-action="Index" asp-route-sortOrder="@ViewData["NameSort"]">Classname</a></th>
+            <th scope="col"><a asp-action="Index" asp-route-sortOrder="@ViewData["AmountSort"]">Number of students</a></th>
+            <th scope="col">Options</th>
+        </tr>
+    </thead>
+    <tbody>
         @foreach (var c in Model)
         {
             <tr>
@@ -25,12 +34,12 @@
               <td>@c.Classname</td>
               <td>@c.NumStudent</td>
               <td>
-                  <a class="btn btn-outline-secondary" asp-controller="Class" asp-action="Edit" asp-route-id="@c.Id">Edit</a>                
+                  <a class="btn btn-outline-secondary" asp-controller="Class" asp-action="Edit" asp-route-id="@c.Id">Edit</a>
                   <form style="display: inline-table" asp-page-handler="Delete" onclick="return confirm('Are you sure you want to delete this?')">
                       <a class="btn btn-outline-secondary" asp-controller="Class" asp-action="Delete" asp-route-id="@c.Id">Delete</a>
                   </form>
               </td>
             </tr>
         }
-  </tbody>
+    </tbody>
 </table>

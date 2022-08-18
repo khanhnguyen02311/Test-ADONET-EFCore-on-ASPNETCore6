@@ -42,7 +42,6 @@ namespace SQLServer_EF6.Services
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
-        
         public List<StudentModel> getAllStudent()
         {
             // Include: load the data with the foreign key's values

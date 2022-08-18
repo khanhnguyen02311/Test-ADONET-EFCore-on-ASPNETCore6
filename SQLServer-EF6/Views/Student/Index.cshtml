@@ -11,7 +11,7 @@
 <form asp-action="Index" method="get" class="mt-3">
     <div class="form-actions no-color">
         <p>
-            Find by name (non case-sensitive): <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" />
+            Find by name (non case-sensitive): <input type="text" name="searchStudent" value="@ViewData["searchFilter"]" />
             <input type="submit" class="btn btn-primary" /> | <a asp-action="Index">Reset</a>
         </p>
     </div>

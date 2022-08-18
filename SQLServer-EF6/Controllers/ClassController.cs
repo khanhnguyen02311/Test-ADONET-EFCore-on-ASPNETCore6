@@ -13,9 +13,26 @@ namespace SQLServer_EF6.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string sortOrder, string searchClass)
         {
             List<ClassModel> listClass = _db.getAllClass();
+            ViewData["searchFilter"] = searchClass;
+            if (!String.IsNullOrEmpty(searchClass))
+                listClass = listClass
+                    .Where(e => e.Classname.ToLower().Contains(searchClass.ToLower()))
+                    .ToList();
+            ViewData["IDSort"] = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
+            ViewData["NameSort"] = sortOrder == "name_desc" ? "name_asc" : "name_desc";
+            ViewData["AmountSort"] = sortOrder == "amount_desc" ? "amount_asc" : "amount_desc";
+            switch (sortOrder)
+            {
+                case "id_desc": listClass = listClass.OrderByDescending(e => e.Id).ToList(); break;
+                case "name_desc": listClass = listClass.OrderByDescending(e => e.Classname).ToList(); break;
+                case "name_asc": listClass = listClass.OrderBy(e => e.Classname).ToList(); break;
+                case "amount_desc": listClass = listClass.OrderByDescending(e => e.NumStudent).ToList(); break;
+                case "amount_asc": listClass = listClass.OrderBy(e => e.NumStudent).ToList(); break;
+                default: listClass = listClass.OrderBy(e => e.Id).ToList(); break;
+            }
             return View(listClass);
         }
 
@@ -28,7 +45,9 @@ namespace SQLServer_EF6.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(ClassModel c)
         {
-            if (c.Classname != null && c.Classname != "" && _db.Classes.SingleOrDefault(e => e.Classname == c.Classname) == null)
+            if (c.Classname != null && 
+                c.Classname != "" && 
+                _db.Classes.SingleOrDefault(e => e.Classname == c.Classname) == null)
             {
                 _db.Classes.Add(c);
                 _db.SaveChanges();
@@ -50,9 +69,9 @@ namespace SQLServer_EF6.Controllers
                     var c = _db.Classes.Find(id);
                     _db.Classes.Remove(c);
                     _db.SaveChanges();
-
-                    return RedirectToAction("Index");
                     transaction.Commit();
+                    
+                    return RedirectToAction("Index");
                 }
                 catch (Exception e)
                 {
@@ -65,8 +84,10 @@ namespace SQLServer_EF6.Controllers
         public IActionResult Edit(int id, string newName)
         {
             ClassModel c = _db.getClassById(id);
-            if (c == null) return NotFound();
-            if (newName != null && newName != "" && _db.Classes.FirstOrDefault(e => e.Classname == newName) == null)
+            if (c == null || c.Id == 0) return NotFound();
+            if (newName != null && 
+                newName != "" && 
+                _db.Classes.FirstOrDefault(e => e.Classname == newName) == null)
             {
                 c.Classname = newName;
                 _db.SaveChanges();
